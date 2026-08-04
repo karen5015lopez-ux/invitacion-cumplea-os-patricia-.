@@ -1,0 +1,397 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>50 Años de Patricia</title>
+    
+    <!-- Tipografías elegantes de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Librería para el efecto de Confeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            /* Fondo suave estilo acuarela lila/lavanda */
+            background: linear-gradient(135deg, #e9e4f0 0%, #d3cce3 50%, #e0c3fc 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: #4a3e56;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Portada de Entrada Interactiva */
+        #portada {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            transition: all 0.8s ease;
+        }
+
+        #portada h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 58px;
+            color: #6b5b95;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+
+        .btn-entrar {
+            background: linear-gradient(45deg, #8e9eab, #eef2f3, #8e9eab);
+            background: #8e7cc3;
+            color: white;
+            padding: 15px 45px;
+            border: none;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(142, 124, 195, 0.4);
+            margin-top: 25px;
+            transition: transform 0.2s;
+        }
+
+        /* Tarjeta Principal Lila y Cursiva */
+        .container {
+            max-width: 440px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            margin: 30px auto;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(107, 91, 149, 0.15);
+            border: 2px solid #dcd6f7;
+            overflow: hidden;
+            text-align: center;
+            padding: 30px 20px;
+            position: relative;
+        }
+
+        /* Encabezado con detalles de inspiración */
+        .decoracion-superior {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .titulo-50 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            color: #6b5b95;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 64px;
+            color: #5c4d7d;
+            margin: -5px 0 15px 0;
+            font-weight: normal;
+        }
+
+        /* MARCO OVALADO (Resuelve que la foto no se corte) */
+        .marco-ovalado {
+            width: 220px;
+            height: 290px;
+            margin: 0 auto 20px auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #b8a9c9;
+            box-shadow: 0 8px 20px rgba(107, 91, 149, 0.2);
+            background-color: #f5f0bb;
+        }
+
+        .foto-cumple {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ajusta la imagen completa armoniosamente */
+        }
+
+        .mensaje-invitacion {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 18px;
+            color: #6b5b95;
+            margin: 15px 0;
+        }
+
+        /* Cuenta Regresiva Lila */
+        .contador {
+            display: flex;
+            justify-content: space-around;
+            background: #f4eeff;
+            padding: 15px 10px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid #dcd6f7;
+        }
+
+        .bloque {
+            text-align: center;
+        }
+
+        .numero {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #5c4d7d;
+            display: block;
+        }
+
+        .etiqueta {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #8e7cc3;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Bloque de Detalles del Evento */
+        .bloque-fecha {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f7fe;
+            border-radius: 15px;
+            border: 1px dashed #b8a9c9;
+        }
+
+        .fecha-destacada {
+            font-size: 22px;
+            color: #6b5b95;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin: 5px 0;
+        }
+
+        .lugar-texto {
+            font-size: 15px;
+            color: #4a3e56;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        /* Sección Lluvia de Sobres */
+        .lluvia-sobres {
+            background-color: #f4eeff;
+            padding: 12px;
+            border-radius: 12px;
+            color: #6b5b95;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 1px solid #dcd6f7;
+        }
+
+        /* Botón Confirmar WhatsApp */
+        .btn-confirmar {
+            display: inline-block;
+            background: linear-gradient(45deg, #8e7cc3, #6b5b95);
+            color: white;
+            text-decoration: none;
+            padding: 16px 35px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            box-shadow: 0 4px 15px rgba(107, 91, 149, 0.3);
+            margin-top: 5px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .btn-confirmar:active {
+            transform: scale(0.96);
+        }
+
+        /* Botón de Música Flotante */
+        #reproductor-btn {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            background: white;
+            border: 2px solid #8e7cc3;
+            color: #8e7cc3;
+            border-radius: 50%;
+            width: 50px; height: 50px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 20px; cursor: pointer; z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PORTADA DE ENTRADA -->
+    <div id="portada">
+        <div style="font-size: 45px; margin-bottom: 10px;">🦋✨🎵</div>
+        <h2>¡Acompáñanos a celebrar!</h2>
+        <p style="color: #6b5b95; font-size: 15px;">50 Años de Patricia</p>
+        <button class="btn-entrar" onclick="abrirInvitacion()">Abrir Invitación</button>
+    </div>
+
+    <!-- AUDIO -->
+    <audio id="musica" loop src="musica.mp3" preload="auto"></audio>
+    <button id="reproductor-btn" onclick="controlarMusica()">🎵</button>
+
+    <!-- TARJETA PRINCIPAL -->
+    <div class="container">
+        
+        <!-- Elementos decorativos superiores inspirados en la foto -->
+        <div class="decoracion-superior">🪩 🦋 🎵</div>
+        <div class="titulo-50">50 años de</div>
+        <h1>Patricia</h1>
+
+        <!-- FOTO EN MARCO OVALADO (No corta la imagen) -->
+        <div class="marco-ovalado">
+            <img src="foto.jpg" alt="Patricia" class="foto-cumple" onerror="this.src='https://via.placeholder.com/220x290/d3cce3/6b5b95?text=Sube+tu+foto.jpg'">
+        </div>
+
+        <div class="mensaje-invitacion">
+            ¡Acompáñanos a celebrar mi Cumpleaños!
+        </div>
+
+        <!-- BLOQUE DE FECHA, HORA Y LUGAR EXACTOS -->
+        <div class="bloque-fecha">
+            <div style="font-size: 12px; color: #8e7cc3; letter-spacing: 2px; text-transform: uppercase;">SÁBADO</div>
+            <div class="fecha-destacada">AGOSTO 29</div>
+            <div style="font-size: 14px; color: #6b5b95; font-weight: 600;">7:00 PM</div>
+            
+            <div class="lugar-texto">
+                📍 <strong>Lugar:</strong><br>
+                Cra. 80 N #73A - 07<br>
+                Bosa Laureles
+            </div>
+        </div>
+
+        <!-- CUENTA REGRESIVA -->
+        <div class="contador">
+            <div class="bloque"><span class="numero" id="dias">00</span><span class="etiqueta">Días</span></div>
+            <div class="bloque"><span class="numero" id="horas">00</span><span class="etiqueta">Horas</span></div>
+            <div class="bloque"><span class="numero" id="minutos">00</span><span class="etiqueta">Min</span></div>
+            <div class="bloque"><span class="numero" id="segundos">00</span><span class="etiqueta">Seg</span></div>
+        </div>
+
+        <!-- CAMBIO SOLICITADO: LLUVIA DE SOBRES -->
+        <div class="lluvia-sobres">
+            ✉️ Lluvia de Sobres ✉️
+        </div>
+
+        <!-- CONFIRMACIÓN DE ASISTENCIA AL NÚMERO DE LA INSPIRACIÓN (320 9764085) -->
+        <p style="font-size: 12px; color: #777; margin-bottom: 8px;">Confirma tu asistencia:</p>
+        <a href="https://wa.me/573209764085?text=¡Hola!%20Confirmo%20mi%20asistencia%20al%20cumpleaños%20de%20Patricia." class="btn-confirmar" target="_blank">
+            Confirmar por WhatsApp
+        </a>
+
+        <div style="font-family: 'Great Vibes', cursive; font-size: 38px; color: #6b5b95; margin-top: 25px;">
+            Te esperamos
+        </div>
+    </div>
+
+    <script>
+        // 1. Desplegar invitación, activar música y lanzar confeti pastel
+        function abrirInvitacion() {
+            const portada = document.getElementById('portada');
+            portada.style.opacity = '0';
+            setTimeout(() => {
+                portada.style.display = 'none';
+                lanzarConfetiLila();
+            }, 800);
+            
+            const audio = document.getElementById('musica');
+            audio.muted = false;
+            audio.volume = 1.0;
+            audio.load();
+            
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log("Música sonando correctamente.");
+                }).catch(error => {
+                    console.log("Navegador bloqueó el audio automático.", error);
+                });
+            }
+        }
+
+        // Lluvia de confeti en tonos lila, rosa y dorado suave
+        function lanzarConfetiLila() {
+            var duracion = 3 * 1000;
+            var fin = Date.now() + duracion;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 60,
+                    origin: { x: 0, y: 0.8 },
+                    colors: ['#b8a9c9', '#6b5b95', '#f3e7e9', '#dfac6c']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 60,
+                    origin: { x: 1, y: 0.8 },
+                    colors: ['#b8a9c9', '#6b5b95', '#f3e7e9', '#dfac6c']
+                });
+
+                if (Date.now() < fin) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+
+        function controlarMusica() {
+            const audio = document.getElementById('musica');
+            if (audio.paused) { audio.play(); } else { audio.pause(); }
+        }
+
+        // 2. Cuenta Regresiva para el 29 de Agosto a las 7:00 PM
+        const fechaDestino = new Date('August 29, 2026 19:00:00').getTime();
+
+        setInterval(function() {
+            const ahora = new Date().getTime();
+            const diferencia = fechaDestino - ahora;
+
+            const d = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+            if (diferencia > 0) {
+                document.getElementById('dias').innerText = d < 10 ? '0' + d : d;
+                document.getElementById('horas').innerText = h < 10 ? '0' + h : h;
+                document.getElementById('minutos').innerText = m < 10 ? '0' + m : m;
+                document.getElementById('segundos').innerText = s < 10 ? '0' + s : s;
+            } else {
+                document.getElementById('dias').innerText = '00';
+                document.getElementById('horas').innerText = '00';
+                document.getElementById('minutos').innerText = '00';
+                document.getElementById('segundos').innerText = '00';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
